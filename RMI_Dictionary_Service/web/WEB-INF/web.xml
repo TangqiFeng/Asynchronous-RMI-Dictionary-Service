@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <display-name>RMI_Dictionary_Service</display-name>
+
+    <!-- A servlet class must be bound to a name -->
+    <servlet>
+        <servlet-name>ServiceHandler</servlet-name>
+        <servlet-class>ie.gmit.sw.ServiceHandler</servlet-class>
+    </servlet>
+
+    <!-- A servlet name must be bound to a URL mapping.
+     i.e. localhost:8080/doProcess executes the servlet ie.gmit.sw.ServiceHandler
+     in WEB-INF/classes -->
+    <servlet-mapping>
+        <servlet-name>ServiceHandler</servlet-name>
+        <url-pattern>/doProcess</url-pattern>
+    </servlet-mapping>
+
+</web-app>
