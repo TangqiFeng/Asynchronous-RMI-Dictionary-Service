@@ -8,10 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>RMI Dictionary Service</title>
   </head>
   <body>
-    <h1>hello</h1>
-  $END$
+    <form bgcolor="white" method="POST" enctype="multipart/form-data" action="doProcess">
+      <h1>Dictionary Service</h1>
+      <p />
+      <input type="text" name="txtQuery" placeholder="Enter query here" />
+      <input type="submit" value="Submit" />
+    </form>
   </body>
 </html>
