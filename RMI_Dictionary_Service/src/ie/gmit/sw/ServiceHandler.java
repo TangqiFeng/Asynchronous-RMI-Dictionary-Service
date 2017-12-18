@@ -58,9 +58,16 @@ public class ServiceHandler extends HttpServlet {
             jobNumber++;
 
         }else{
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/poll");
-            dispatcher.forward(request,response);
             //Check out-queue for finished job with the given taskNumber
+            String result = out_queue.get(taskNumber);
+            if(result != null){
+                out.print("<h1>Dictionary Service</h1>");
+                out.print("<p />");
+                out.print("<p><b>Response:</b> "+result+"</p>");
+                out.print("</body>");
+                out.print("</html>");
+                return;
+            }
 
         }
 
@@ -68,9 +75,21 @@ public class ServiceHandler extends HttpServlet {
         out.print("<h1>Dictionary Service</h1>");
         out.print("<p />");
         out.print("<H3>waiting for response...</H3>");
-        out.print("<p>jobID: "+taskNumber+"...</p>");
+        out.print("<p>jobID: "+taskNumber+"</p>");
+
+        //We can also dynamically write out a form using hidden form fields. The form itself is not
+        //visible in the browser, but the JavaScript below can see it.
+        out.print("<form name=\"frmRequestDetails\" action=\"doProcess\">");
+        out.print("<input name=\"txtQuery\" type=\"hidden\" value=\"" + querytxt + "\">");
+        out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
+        out.print("</form>");
         out.print("</body>");
         out.print("</html>");
+
+        //JavaScript to periodically poll the server for updates (this is ideal for an asynchronous operation)
+        out.print("<script>");
+        out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 3000);"); //Refresh every 10 seconds
+        out.print("</script>");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
