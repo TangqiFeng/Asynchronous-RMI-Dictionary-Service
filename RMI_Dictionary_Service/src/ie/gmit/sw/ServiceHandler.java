@@ -1,7 +1,10 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -38,17 +41,27 @@ public class ServiceHandler extends HttpServlet {
         out.print("</head>");
         out.print("<body>");
 
-        //bolocking queue
-        //BlockingQueue
+        //bolocking queue, used to store in-queue
+        BlockingQueue<Query> in_queue = new LinkedBlockingDeque<Query>(7);
+        //map<taskNumber, result>, used to store out-queue
+        Map<String,String> out_queue = new HashMap<>();
+
         //We could use the following to track asynchronous tasks. Comment it out otherwise...
         if (taskNumber == null){
             taskNumber = new String("T" + jobNumber);
-            jobNumber++;
             //Add job to in-queue
+            try {
+                in_queue.put(new Query(taskNumber,querytxt));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            jobNumber++;
+
         }else{
             RequestDispatcher dispatcher = request.getRequestDispatcher("/poll");
             dispatcher.forward(request,response);
             //Check out-queue for finished job with the given taskNumber
+
         }
 
         //Output some stuff at the top of the generated page
@@ -66,3 +79,41 @@ public class ServiceHandler extends HttpServlet {
 
 }
 
+//this is the job bean class
+class Query{
+    private String taskNumber;
+    private String querytxt;
+    private String result;
+
+    public Query() {
+    }
+
+    public Query(String taskNumber, String querytxt) {
+        this.taskNumber = taskNumber;
+        this.querytxt = querytxt;
+    }
+
+    public String getTaskNumber() {
+        return taskNumber;
+    }
+
+    public void setTaskNumber(String taskNumber) {
+        this.taskNumber = taskNumber;
+    }
+
+    public String getQuerytxt() {
+        return querytxt;
+    }
+
+    public void setQuerytxt(String querytxt) {
+        this.querytxt = querytxt;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+}
