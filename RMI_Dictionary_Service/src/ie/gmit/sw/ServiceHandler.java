@@ -1,6 +1,7 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.rmi.Naming;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -10,6 +11,11 @@ import javax.servlet.http.*;
 
 public class ServiceHandler extends HttpServlet {
     private static long jobNumber = 0;
+
+    //bolocking queue, used to store in-queue
+    BlockingQueue<Query> in_queue = new LinkedBlockingDeque<Query>(7);
+    //map<taskNumber, result>, used to store out-queue
+    Map<String,String> out_queue = new HashMap<>();
 
     public void init() throws ServletException{
         //The servlet context is the application itself.
@@ -41,11 +47,6 @@ public class ServiceHandler extends HttpServlet {
         out.print("</head>");
         out.print("<body>");
 
-        //bolocking queue, used to store in-queue
-        BlockingQueue<Query> in_queue = new LinkedBlockingDeque<Query>(7);
-        //map<taskNumber, result>, used to store out-queue
-        Map<String,String> out_queue = new HashMap<>();
-
         //We could use the following to track asynchronous tasks. Comment it out otherwise...
         if (taskNumber == null){
             taskNumber = new String("T" + jobNumber);
@@ -57,6 +58,13 @@ public class ServiceHandler extends HttpServlet {
             }
             jobNumber++;
 
+            // call a rmi client
+            try {
+                RMIClient();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }else{
             //Check out-queue for finished job with the given taskNumber
             String result = out_queue.get(taskNumber);
@@ -66,6 +74,7 @@ public class ServiceHandler extends HttpServlet {
                 out.print("<p><b>Response:</b> "+result+"</p>");
                 out.print("</body>");
                 out.print("</html>");
+                out_queue.remove(taskNumber);
                 return;
             }
 
@@ -95,6 +104,23 @@ public class ServiceHandler extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
+
+    public void RMIClient() throws Exception{
+        //Ask the registry running on localhost and listening in port 1099 for the instance of
+        //the FileService object that is bound to the RMI registry with the name fileService.
+        DictionaryService ds = (DictionaryService) Naming.lookup("rmi://127.0.0.1:1099/dictionaryService");
+
+        //get a job from in_queue
+        Query query = in_queue.take();
+        //Make a remote method invocation to ask for search result
+        ds.loadDictionary();
+        query.setResult(ds.check(query.getQuerytxt()));
+
+        //put this job to out_queue
+        out_queue.put(query.getTaskNumber(),query.getResult());
+    }
+
+
 
 }
 

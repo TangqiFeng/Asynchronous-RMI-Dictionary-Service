@@ -11,7 +11,7 @@
     <title>RMI Dictionary Service</title>
   </head>
   <body>
-    <form bgcolor="white" method="POST" enctype="multipart/form-data" action="doProcess">
+    <form bgcolor="white" method="POST"  action="doProcess">
       <h1>Dictionary Service</h1>
       <p />
       <input type="text" name="txtQuery" placeholder="Enter query here" />
