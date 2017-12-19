@@ -72,6 +72,8 @@ public class ServiceHandler extends HttpServlet {
                 out.print("<h1>Dictionary Service</h1>");
                 out.print("<p />");
                 out.print("<p><b>Response:</b> "+result+"</p>");
+                out.print("<p />");
+                out.print("<a href=\"/\"><button>Make another query</button></a>");
                 out.print("</body>");
                 out.print("</html>");
                 out_queue.remove(taskNumber);

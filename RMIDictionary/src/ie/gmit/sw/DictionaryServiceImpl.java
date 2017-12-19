@@ -38,7 +38,7 @@ public class DictionaryServiceImpl extends UnicastRemoteObject implements Dictio
             }
 
         }
-        // if no result fond, return
+        // if no result found, return msg
         return "oops, string not found !";
     }
 
