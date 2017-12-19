@@ -105,6 +105,7 @@ public class ServiceHandler extends HttpServlet {
         doGet(request, response);
     }
 
+    // a method act as a rmi client.
     public void RMIClient() throws Exception{
         //Ask the registry running on localhost and listening in port 1099 for the instance of
         //the FileService object that is bound to the RMI registry with the name fileService.
@@ -114,7 +115,7 @@ public class ServiceHandler extends HttpServlet {
         Query query = in_queue.take();
         //Make a remote method invocation to ask for search result
         ds.loadDictionary();
-        query.setResult(ds.check(query.getQuerytxt()));
+        query.setResult(ds.lookup(query.getQuerytxt()));
 
         //put this job to out_queue
         out_queue.put(query.getTaskNumber(),query.getResult());
