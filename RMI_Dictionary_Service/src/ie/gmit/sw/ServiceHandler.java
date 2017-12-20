@@ -5,6 +5,8 @@ import java.rmi.Naming;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -58,13 +60,19 @@ public class ServiceHandler extends HttpServlet {
             }
             jobNumber++;
 
-            // call a rmi client
-            try {
-                RMIClient();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            // use threading pool to send rmi queries
+            ExecutorService threadPool = Executors.newFixedThreadPool(5);
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // call a rmi client
+                    try {
+                        RMIClient();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }else{
             //Check out-queue for finished job with the given taskNumber
             String result = out_queue.get(taskNumber);
