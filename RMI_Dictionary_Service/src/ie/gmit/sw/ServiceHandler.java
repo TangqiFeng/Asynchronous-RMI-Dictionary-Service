@@ -75,7 +75,7 @@ public class ServiceHandler extends HttpServlet {
             });
         }else{
             //Check out-queue for finished job with the given taskNumber
-            String result = out_queue.get(taskNumber);
+            String result = out_queue.get(taskNumber);//get data from out_queue
             if(result != null){
                 out.print("<h1>Dictionary Service</h1>");
                 out.print("<p />");
@@ -84,6 +84,7 @@ public class ServiceHandler extends HttpServlet {
                 out.print("<a href=\"/\"><button>Make another query</button></a>");
                 out.print("</body>");
                 out.print("</html>");
+                //remove the job from out_queue
                 out_queue.remove(taskNumber);
                 return;
             }
@@ -124,7 +125,9 @@ public class ServiceHandler extends HttpServlet {
         //get a job from in_queue
         Query query = in_queue.take();
         //Make a remote method invocation to ask for search result
-        ds.loadDictionary();
+        if(query.getTaskNumber().equals("T0")) {
+            ds.loadDictionary();
+        }
         query.setResult(ds.lookup(query.getQuerytxt()));
 
         //put this job to out_queue

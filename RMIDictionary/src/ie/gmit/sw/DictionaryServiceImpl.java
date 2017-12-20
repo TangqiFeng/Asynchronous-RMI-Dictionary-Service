@@ -50,6 +50,38 @@ public class DictionaryServiceImpl extends UnicastRemoteObject implements Dictio
         //add more ...
 
     }
+
+    // add word to dictionary
+    public String addItem(String word, String def) throws RemoteException {
+        dics.add(new Dictionary(word,def));
+        return "add success !";
+    }
+
+    // delete word from dictionary
+    public String deleteItem(String word) throws RemoteException {
+        for (Dictionary d:dics){
+            if(d.getWord().equals(word)){
+                dics.remove(d);
+                return "delete success !";
+            }
+        }
+        return "delete failed ! (do not find such word)";
+    }
+
+    // modify word to dictionary
+    public String modifyItem(String word, String def) throws RemoteException {
+        for (Dictionary d:dics){
+            if(d.getWord().equals(word)){
+                dics.remove(d);
+                dics.add(new Dictionary(word,def));
+                return "modify success !";
+            }
+        }
+        return "modify failed ! (do not find such word)";
+    }
+
+
+
 }
 
 // bean class, to store word object

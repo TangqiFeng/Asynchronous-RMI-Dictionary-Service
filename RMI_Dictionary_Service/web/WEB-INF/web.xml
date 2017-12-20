@@ -19,4 +19,14 @@
         <url-pattern>/doProcess</url-pattern>
     </servlet-mapping>
 
+    <!--this RMIClientHandler handles add/remove/modify entries in the dictionary-->
+    <servlet>
+        <servlet-name>RMIClientHandler</servlet-name>
+        <servlet-class>ie.gmit.sw.RMIClientHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RMIClientHandler</servlet-name>
+        <url-pattern>/doOperation</url-pattern>
+    </servlet-mapping>
+
 </web-app>
