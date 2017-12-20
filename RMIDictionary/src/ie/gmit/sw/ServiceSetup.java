@@ -5,7 +5,7 @@ import ie.gmit.sw.DictionaryService;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
-public class RMIDictionaryServer {
+public class ServiceSetup {
     public static void main(String[] args)throws Exception {
         //Create an instance of a DictionaryServiceImpl. As DictionaryServiceImpl implements the DictionaryService
         //interface, it can be referred to as a DictionaryService type.
