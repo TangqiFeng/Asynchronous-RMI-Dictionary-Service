@@ -17,5 +17,11 @@
       <input type="text" name="txtQuery" placeholder="Enter query here" />
       <input type="submit" value="Submit" />
     </form>
+    <p />
+    <label>NOTE: the first time setup the server, you need do the query first (loading data), </label>
+    <br />
+    <label>then using the function blow.</label>
+    <p />
+    <a href="/doOperation"><button>manage entries in the dictionary</button></a>
   </body>
 </html>

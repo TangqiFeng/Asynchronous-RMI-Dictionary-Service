@@ -113,7 +113,7 @@ public class ServiceHandler extends HttpServlet {
 
         //JavaScript to periodically poll the server for updates (this is ideal for an asynchronous operation)
         out.print("<script>");
-        out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 3000);"); //Refresh every 10 seconds
+        out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 10 seconds
         out.print("</script>");
     }
 
