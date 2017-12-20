@@ -67,3 +67,6 @@ clone or download this repository
   $ java -cp ./dictionary-service.jar ie.gmit.sw.ServiceSetup
   ```
   3.open browser and type http://localhost:8080 to the address bar.
+  
+  
+  **NOTE: the example words in the dictionary are list here: https://github.com/TangqiFeng/Asynchronous-RMI-Dictionary-Service/wiki**
