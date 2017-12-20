@@ -19,6 +19,11 @@ public class ServiceHandler extends HttpServlet {
     //map<taskNumber, result>, used to store out-queue
     Map<String,String> out_queue = new HashMap<>();
 
+    /* This method is only called once, when the servlet is first started (like a constructor).
+	 * It's the Template Patten in action! Any application-wide variables should be initialised
+	 * here. Note that if you set the xml element <load-on-startup>1</load-on-startup>, this
+	 * method will be automatically fired by Tomcat when the web server itself is started.
+	 */
     public void init() throws ServletException{
         //The servlet context is the application itself.
         ServletContext ctx = getServletContext();

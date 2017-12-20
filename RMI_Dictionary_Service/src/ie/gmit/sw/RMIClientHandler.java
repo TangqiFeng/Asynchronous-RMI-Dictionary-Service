@@ -13,6 +13,11 @@ import java.rmi.Naming;
 @WebServlet(name = "RMIClientHandler")
 public class RMIClientHandler extends HttpServlet {
 
+    /* This method is only called once, when the servlet is first started (like a constructor).
+	 * It's the Template Patten in action! Any application-wide variables should be initialised
+	 * here. Note that if you set the xml element <load-on-startup>1</load-on-startup>, this
+	 * method will be automatically fired by Tomcat when the web server itself is started.
+	 */
     public void init() throws ServletException{
         //The servlet context is the application itself.
         ServletContext ctx = getServletContext();
@@ -41,6 +46,8 @@ public class RMIClientHandler extends HttpServlet {
         out.print("<body>");
 
         //handle the add/delete/modify operations
+        // here, we do not use multiTreading, we do not want many
+        // people modify the dictionary at the same time
         if (word == null && definition==null){
             //do nothing here, just
         }else {
@@ -88,7 +95,7 @@ public class RMIClientHandler extends HttpServlet {
         //the FileService object that is bound to the RMI registry with the name fileService.
         DictionaryService ds = (DictionaryService) Naming.lookup("rmi://127.0.0.1:1099/dictionaryService");
 
-        //Make a remote method invocation
+        //Make a remote method invocation, separate by different option requests
         if(opt.equals(new String("add"))){
             return (ds.addItem(d.getWord(),d.getDefinition()));
         }else if(opt.equals(new String("delete"))){
